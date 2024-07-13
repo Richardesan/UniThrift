@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../Auth/firebase";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -13,7 +16,7 @@ const ForgotPassword = () => {
       toast.success("Check your email for a password reset link", { position: "top-right" });
       setEmail(""); // Reset the email input
       setTimeout(() => {
-        window.location.href = "/login";
+        navigate('/login');
       }, 700);
     
     } catch (err) {

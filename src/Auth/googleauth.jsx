@@ -4,8 +4,10 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "./firebase";
 import { toast } from "react-toastify";
 import { doc, setDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 const Googleauth = ({ sign }) => {
+  const navigate = useNavigate();
   async function googleLogin() {
     const provider = new GoogleAuthProvider();
     try {
@@ -16,12 +18,15 @@ const Googleauth = ({ sign }) => {
           email: user.email,
           photo: user.photoURL,
           firstName: user.displayName,
-          location: "Pls pick a location"
+          location: "Pls pick a location",
         });
-        toast.success("User logged In Successfully!!", { position: "top-right" });
+        toast.success("User logged In Successfully!!", {
+          position: "top-right",
+          autoClose: 1000, // Auto close the toast after 3 seconds
+        });
         setTimeout(() => {
-          window.location.href = "/profile";
-        }, 700);
+          navigate("/profile");
+        }, 2000);
       }
     } catch (error) {
       toast.error("Failed to log in with Google", { position: "top-right" });
