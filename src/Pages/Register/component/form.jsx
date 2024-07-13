@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import Googleauth from "../../../Auth/googleauth";
 import Xicon from "../../../assets/xlogo.jpg";
@@ -8,32 +8,33 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../Auth/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
-import { useHistory } from 'react-router-dom';
-
-const onSubmit = async (values, actions) => {
-  try {
-    await createUserWithEmailAndPassword(auth, values.email, values.password);
-    const user = auth.currentUser;
-    if (user) {
-      await setDoc(doc(db, "Users", user.uid), {
-        email: user.email,
-        photo: "",
-        firstName: user.displayName,
-        location: values.location
-      });
-      toast.success("User Registered Successfully!!", { position: "top-right" });
-      actions.resetForm();
-      setTimeout(() => {
-        history.push('/login');
-      }, 1000);
-    }
-  } catch (error) {
-    toast.error(error.message, { position: "top-right" });
-    console.error(error);
-  }
-};
 
 const Form = () => {
+  const navigate = useNavigate();
+
+  const onSubmit = async (values, actions) => {
+    try {
+      await createUserWithEmailAndPassword(auth, values.email, values.password);
+      const user = auth.currentUser;
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          photo: "",
+          firstName: user.displayName,
+          location: values.location
+        });
+        toast.success("User Registered Successfully!!", { position: "top-right" });
+        actions.resetForm();
+        setTimeout(() => {
+          navigate('/login');
+        }, 1000);
+      }
+    } catch (error) {
+      toast.error(error.message, { position: "top-right" });
+      console.error(error);
+    }
+  };
+
   const {
     handleBlur,
     values,
@@ -86,8 +87,6 @@ const Form = () => {
           {errors.password}
         </p>
       )}
-
-      
       <select
         id="location"
         className={`bg-white border-2 rounded-md w-full p-2 mt-5 outline-none ${
