@@ -8,6 +8,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../../Auth/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { useHistory } from 'react-router-dom';
 
 const onSubmit = async (values, actions) => {
   try {
@@ -23,7 +24,7 @@ const onSubmit = async (values, actions) => {
       toast.success("User Registered Successfully!!", { position: "top-right" });
       actions.resetForm();
       setTimeout(() => {
-        window.location.href = "/login";
+        history.push('/login');
       }, 1000);
     }
   } catch (error) {
