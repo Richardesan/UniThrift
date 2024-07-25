@@ -1,39 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import { Link } from 'react-router-dom'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import Header from "./components/Ui/Header";
+import Footer from "./components/Ui/Footer";
+import { auth, db } from "./Auth/firebase";
+import { getDoc, doc } from 'firebase/firestore';
+import Home from './Pages/Home/Home';
+export const UserContext = React.createContext();
+const App = () => {
+  const [userDetails, setUserDetails] = useState(null);
 
-function App() {
-  const [count, setCount] = useState(0)
+  const fetchUserData = async () => {
+    auth.onAuthStateChanged(async (user) => {
+      if (user) {
+        try {
+          const docRef = doc(db, "Users", user.uid);
+          const docSnap = await getDoc(docRef);
+          if (docSnap.exists()) {
+            setUserDetails(docSnap.data());
+          } else {
+            console.log("No such document!");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        console.log("User is not logged In");
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          <Link to="/login">
-            Login button
-          </Link>
-         
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className='overflow-hidden'>
+     <UserContext.Provider value={userDetails}>
+        <Header />
+    <Home/>
+    <Footer/>
+      </UserContext.Provider>
+    </div>
+  );
+};
 
-export default App
+export default App;

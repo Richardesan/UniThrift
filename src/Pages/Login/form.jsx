@@ -1,12 +1,11 @@
 import React from "react";
 import { Formik, useFormik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import GoogleIcon from "../../../assets/GooglepngIcon.png";
-import Xicon from "../../../assets/xlogo.jpg";
-import { userSchema } from "../UserValidation";
-import Googleauth from "../../../Auth/googleauth";
+import Xicon from "../../assets/xlogo.jpg";
+import { userSchema } from "./UserValidation";
+import Googleauth from "../../Auth/googleauth";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../Auth/firebase";
+import { auth } from "../../Auth/firebase";
 import { toast } from "react-toastify";
 
 const Form = () => {
@@ -22,7 +21,7 @@ const Form = () => {
         position: "top-right",
       });
       setTimeout(() => {
-        navigate('/profile'); // Use navigate here
+        navigate('/'); // Use navigate here
       }, 700);
       actions.resetForm();
     } catch (error) {
@@ -83,7 +82,7 @@ const Form = () => {
       </p>
       <button
         disabled={isSubmitting}
-        className={`w-full bg-[#171717] text-white font-bold text-md rounded-md py-2 ${isSubmitting ? "bg-opacity-50" : "bg-opacity-100"}`}
+        className={`w-full bg-actionCol text-white font-bold text-md rounded-md py-2 ${isSubmitting ? "bg-opacity-50" : "bg-opacity-100"}`}
         type="submit"
       >
         Sign in

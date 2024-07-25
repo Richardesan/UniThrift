@@ -13,19 +13,21 @@ const Googleauth = ({ sign }) => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+      console.log(user)
       if (user) {
         await setDoc(doc(db, "Users", user.uid), {
           email: user.email,
           photo: user.photoURL,
           firstName: user.displayName,
           location: "Pls pick a location",
+          
         });
         toast.success("User logged In Successfully!!", {
           position: "top-right",
-          autoClose: 1000, // Auto close the toast after 3 seconds
+          autoClose: 500, // Auto close the toast after 3 seconds
         });
         setTimeout(() => {
-          navigate("/profile");
+          navigate("/");
         }, 2000);
       }
     } catch (error) {

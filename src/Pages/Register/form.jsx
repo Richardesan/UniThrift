@@ -1,11 +1,11 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-import Googleauth from "../../../Auth/googleauth";
-import Xicon from "../../../assets/xlogo.jpg";
-import { userSchema } from "../userValidation";
+import Googleauth from "../../Auth/googleauth";
+import Xicon from "../../assets/xlogo.jpg"
+import { userSchema } from "./userValidation";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "../../../Auth/firebase";
+import { auth, db } from "../../Auth/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { toast } from "react-toastify";
 
@@ -108,7 +108,7 @@ const Form = () => {
       )}
       <button
         disabled={isSubmitting}
-        className={`w-full bg-[#171717] text-white font-bold text-md rounded-md py-2 ${
+        className={`w-full bg-actionCol text-white font-bold text-md rounded-md py-2 ${
           isSubmitting ? "bg-opacity-50" : "bg-opacity-100"
         }`}
         type="submit"
